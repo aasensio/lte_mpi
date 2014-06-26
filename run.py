@@ -37,6 +37,7 @@ file.write(config['general']['number of heliocentric angles']+'\n')
 file.write(config['general']['cosinus heliocentric angles']+'\n')
 file.write(config['general']['weight for each heliocentric angle']+'\n')
 file.write("'"+config['general']['file with model atmosphere']+"'\n")
+file.write("'"+config['general']['file with linelist']+"'\n") 
 file.write("'"+config['general']['file with output results']+"'\n")
 
 file.write(config['wavelength region']['first wavelength']+'\n')

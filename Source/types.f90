@@ -41,7 +41,7 @@ implicit none
 		character(len=10) :: mode
 		integer :: nmus, nprocs, nchunks, index_chunk
 		real(kind=8), pointer :: mus(:), chunks(:,:), weights(:)
-		character(len=100) :: atm_file, out_file
+		character(len=100) :: atm_file, out_file, linelist_file
 		real(kind=8) :: ini_lambda, end_lambda, step_lambda, chunk_size
 		integer, pointer :: slave_killed(:)
 	end type config_type

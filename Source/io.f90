@@ -44,7 +44,9 @@ contains
 		read(12,*) (conf%weights(j),j=1,conf%nmus)
 		
 		read(12,*) conf%atm_file
+		read(12,*) conf%linelist_file
 		read(12,*) conf%out_file
+		
 
 		read(12,*) conf%ini_lambda
 		read(12,*) conf%end_lambda
@@ -64,7 +66,7 @@ contains
 	integer :: n, i, j
 
 		open(unit=12,file='DATA/partition_molecules.dat',action='read',status='old')
-		do j = 1, 3
+		do j = 1, 4
 			read(12,*)
 			read(12,*)
 			read(12,*) n
@@ -243,7 +245,7 @@ contains
 		endif
 		
 ! Compute chemical equilibrium to get the LTE hydrogen populations
-		mol_code = (/15, 31, 13/)
+		mol_code = (/15, 31, 13, 107/)
 		atm%mol_density = calculate_abundance_Pg_from_T_Pe(mol_code, atm%n_depths, atm%abundances, atm%height, atm%T, atm%Pe, &
 			atm%PH, atm%PHminus, atm%PHplus, atm%PH2, atm%PH2plus, atm%P_total)
 
