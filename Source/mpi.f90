@@ -1,6 +1,6 @@
 module mpi_mod
 use types_mod, only : config_type, spectrum_type, atmosphere_type
-use vars_mod, only : PC, atm, conf, spectrum
+use vars_mod, only : PC, atm, conf, spectrum, nMolecules
 implicit none
 
 contains
@@ -81,7 +81,7 @@ contains
 
 			allocate(atm%partition_functions(atm%n_depths, 92, 3))
 
-			allocate(atm%partition_functions_molecular(atm%n_depths,3))
+			allocate(atm%partition_functions_mol(atm%n_depths,nMolecules))
 
 ! If Zeeman synthesis, allocate memory for vector magnetic field
 			if (index(atm%magnetic,'NONMAGNETIC') == 0) then
@@ -113,10 +113,10 @@ contains
 		call MPI_Bcast(atm%P_total,atm%n_depths,MPI_DOUBLE_PRECISION,0,MPI_COMM_WORLD,ierr)
 		call MPI_Bcast(atm%nhtot,atm%n_depths,MPI_DOUBLE_PRECISION,0,MPI_COMM_WORLD,ierr)
 
-		call MPI_Bcast(atm%mol_density,3*atm%n_depths,MPI_DOUBLE_PRECISION,0,MPI_COMM_WORLD,ierr)
+		call MPI_Bcast(atm%mol_density,nMolecules*atm%n_depths,MPI_DOUBLE_PRECISION,0,MPI_COMM_WORLD,ierr)
 
 		call MPI_Bcast(atm%partition_functions,atm%n_depths*92*3,MPI_DOUBLE_PRECISION,0,MPI_COMM_WORLD,ierr)
-		call MPI_Bcast(atm%partition_functions_molecular,atm%n_depths*3,MPI_DOUBLE_PRECISION,0,MPI_COMM_WORLD,ierr)
+		call MPI_Bcast(atm%partition_functions_mol,atm%n_depths*nMolecules,MPI_DOUBLE_PRECISION,0,MPI_COMM_WORLD,ierr)
 
 ! If Zeeman synthesis, broadcast vector magnetic field
 		if (index(atm%magnetic,'NONMAGNETIC') == 0) then

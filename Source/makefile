@@ -14,7 +14,7 @@
 # gfortran (comment these lines if you want to use another compiler)
 #COMPILER = gfortran
 #FLAGS =
-#OPTIONS = -c -ffree-line-length-none
+#OPTIONS = -c -ffree-line-length-none -g -traceback
  
 # ifort (comment these lines if you want to use another compiler)
 # COMPILER = ifort
@@ -25,6 +25,7 @@
 COMPILER = mpif90 
 FLAGS = 
 OPTIONS = -c -O3 
+#-g -fbacktrace
 #-traceback -g -check all
 #-fpe:0 -traceback -g -check all -fpstkchk
 OPTIONS_LINK =

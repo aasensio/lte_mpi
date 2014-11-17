@@ -90,7 +90,10 @@ contains
 
 						h = xa(khi)-xa(klo)
 
-						if (h == 0.d0) pause 'bad xa input in spline'
+						if (h == 0.d0) then
+							print *, 'bad xa input in spline'
+							stop
+						endif
 						a = (xa(khi)-x(i))/h
 						b = (x(i)-xa(klo))/h
 
@@ -834,9 +837,9 @@ contains
 	function formal_sol_polarized(height, opacity, source, mu, boundary, idir)
 	real(kind=8) :: height(:), opacity(:,:), source(:), mu, boundary(:)
 	real(kind=8) :: formal_sol_polarized(4), Inten(4)
-	integer :: k, km, kp, idir
+	integer :: k, km, kp, idir, k0, kf
 	real(kind=8) :: chim, chi0, chip, dtp, dtm, exu
-	real(kind=8) :: psim, psi0, psip, psim_lin, psi0_lin, dm, dp, k0, kf
+	real(kind=8) :: psim, psi0, psip, psim_lin, psi0_lin, dm, dp
 
 	integer :: i, j, n
 	real(kind=8), allocatable :: ab_matrix(:,:,:), source_vector(:,:)

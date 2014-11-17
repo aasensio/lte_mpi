@@ -1,5 +1,5 @@
 module io_mod
-use vars_mod, only : config_file, myrank, PK, UMA, identity, PI
+use vars_mod, only : config_file, myrank, PK, UMA, identity, PI, nMolecules, mol_code
 use types_mod, only : config_type, atmosphere_type
 use chemical_eq_mod, only : calculate_abundance_pg_from_t_pe
 use atomic_partition_mod, only : partition_atomic
@@ -75,7 +75,7 @@ contains
 			do i = 1, n
 				read(12,*) temp(i), part(i)
 			enddo
-			call spline(temp,part,atm%T,atm%partition_functions_molecular(:,j))
+			call spline(temp,part,atm%T,atm%partition_functions_mol(:,j))
 
 			deallocate(temp, part)
 		enddo
@@ -88,7 +88,8 @@ contains
 !---------------------------------------------------------
 	subroutine read_abundance(atm)
 	type(atmosphere_type) :: atm
-	integer :: i, j
+	integer :: i
+	real(kind=8) :: j
 
 		open(unit=12,file='DATA/abundances.dat',action='read',status='old')
 
@@ -114,8 +115,8 @@ contains
 	type(atmosphere_type) :: atm
 	real(kind=8) :: abund_change(92), abundance_scale, logabundH
 	real(kind=8), allocatable, dimension(:) :: u1, u2, u3, rho
-	character(len=20) :: abundances_label
-	integer :: i, j, mol_code(3)
+	character(len=20) :: abundances_label	
+	integer :: i, j
 
 		open(unit=12,file=conf%atm_file,action='read',status='old')
 
@@ -163,8 +164,6 @@ contains
 ! Go on reading the model atmosphere
 		read(12,*) atm%n_depths
 
-		print *, atm%n_depths
-
 		allocate(atm%height(atm%n_depths))
 		allocate(atm%cmass(atm%n_depths))
 		allocate(atm%T(atm%n_depths))
@@ -182,7 +181,7 @@ contains
 		allocate(atm%P_total(atm%n_depths))
 		allocate(atm%nhtot(atm%n_depths))
 
-		allocate(atm%mol_density(3,atm%n_depths))
+		allocate(atm%mol_density(nMolecules,atm%n_depths))
 
 ! Column mass scale
 		if (index(atm%hscale,'CMASS') /= 0) then
@@ -242,10 +241,9 @@ contains
 				
 			endif
 			
-		endif
+		endif				
 		
-! Compute chemical equilibrium to get the LTE hydrogen populations
-		mol_code = (/15, 31, 13, 107/)
+! Compute chemical equilibrium to get the LTE hydrogen populations				
 		atm%mol_density = calculate_abundance_Pg_from_T_Pe(mol_code, atm%n_depths, atm%abundances, atm%height, atm%T, atm%Pe, &
 			atm%PH, atm%PHminus, atm%PHplus, atm%PH2, atm%PH2plus, atm%P_total)
 
@@ -265,24 +263,23 @@ contains
 			
 			deallocate(rho)
 		endif
-
+		
 ! Precompute the partition functions for all temperatures in the model
 		allocate(atm%partition_functions(atm%n_depths, 92, 3))
-		allocate(atm%partition_functions_molecular(atm%n_depths, 3))
+		allocate(atm%partition_functions_mol(atm%n_depths, nMolecules))
 
 		allocate(u1(atm%n_depths))
 		allocate(u2(atm%n_depths))
 		allocate(u3(atm%n_depths))
-		
-		do i = 1, atm%n_depths
-			do j = 1, 92
-				call partition_atomic(atm%T, j, u1, u2, u3)
-				atm%partition_functions(i,j,:) = (/u1, u2, u3/)
-			enddo
-
-			call compute_partition_molecular(atm)
-
+				
+		do j = 1, 92
+			call partition_atomic(atm%T, j, u1, u2, u3)			
+			atm%partition_functions(:,j,1) = u1
+			atm%partition_functions(:,j,2) = u2
+			atm%partition_functions(:,j,3) = u3
 		enddo
+
+		call compute_partition_molecular(atm)		
 
 		deallocate(u1,u2,u3)
 

@@ -413,7 +413,7 @@ pro merge_tio, atomic_linelist, mol_linelist, out_linelist
 end
 
 pro merge
-	merge_tio, 'kurucz_expanded.list', 'tio.dat', 'kurucz_plus_tio.list'
+; 	merge_tio, 'kurucz_expanded.list', 'tio.dat', 'kurucz_plus_tio.list'
 	
 	merge_co, 'kurucz_expanded.list', 'coxx.asc', 'kurucz_plus_co.list'
 	merge_oh, 'kurucz_plus_co.list', 'ohnew.asc', 'kurucz_plus_co_oh.list'

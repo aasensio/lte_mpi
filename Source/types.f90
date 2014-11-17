@@ -10,7 +10,7 @@ implicit none
 		real(kind=8), dimension(:), pointer :: cos_gamma, sin_gamma, cos_2chi, sin_2chi
 		real(kind=8), dimension(:), pointer :: weights
 		real(kind=8), dimension(:), pointer :: abundances, mass
-		real(kind=8), dimension(:,:), pointer :: doppler_width, abund2, partition, ionization_pot, mol_density, partition_functions_molecular
+		real(kind=8), dimension(:,:), pointer :: doppler_width, abund2, partition, ionization_pot, mol_density, partition_functions_mol
 		real(kind=8), dimension(:), pointer :: PH, PHminus, PHplus, PH2, PH2plus, P_total, nHtot
 		real(kind=8), dimension(:,:,:), pointer :: partition_functions
 		character(len=2), dimension(:), pointer :: element_symbol

@@ -945,6 +945,7 @@ contains
 		open(unit=43,file='DATA/species.dat',status='old',action='read')
 		
 		read(43,*) n_included
+		if (allocated(which_included)) deallocate(which_included)
 		allocate(which_included(n_included))
 		do i = 1, n_included
 			read(43,FMT='(A16)') name
@@ -1126,7 +1127,7 @@ contains
 		print *, 'Calculated abundance for molecule : ', molec(mol_code)		
 		calculate_abundance_Pe_from_T_Pg = abun_out
 		
-		deallocate(which_included)
+! 		deallocate(which_included)
 
 	end function calculate_abundance_Pe_from_T_Pg
 	
@@ -1160,19 +1161,19 @@ contains
 ! 		write(45,*) n_grid
 
 		nmolec = size(mol_code)
-
+		
 ! Reading equilibrium constants of the 273 molecules included
 		call read_equil_cte
 ! Reading equilibrium constants of atomic and ionic species
-		call read_partition_cte_atomic
+		call read_partition_cte_atomic		
 ! Reading 21 elements
-		call read_elements(abundance)
+		call read_elements(abundance)		
 ! Reading estequiometer values
-		call read_estequio
+		call read_estequio		
 ! Reading composition of the 273 molecules
-		call read_composition
+		call read_composition		
 ! Reading what molecules are included
-		call read_what_species
+		call read_what_species						
 		
 		do loop = 1, n_grid
 		
@@ -1248,10 +1249,10 @@ contains
 		enddo
 
 ! 		close(45)
-! 		print *, 'Calculated abundance for molecule : ', molec(mol_code)		
+ 		print *, 'Calculated abundance for molecule : ', molec(mol_code)
  		calculate_abundance_Pg_from_T_Pe = abun_out
-		
-		deallocate(which_included)
+ 		
+! 		deallocate(which_included)
 
 	end function calculate_abundance_Pg_from_T_Pe
 
@@ -1376,7 +1377,7 @@ contains
 		close(45)
 		print *, 'Calculated abundance for molecule : ', molec(mol_code)
 
-		deallocate(which_included)
+! 		deallocate(which_included)
 
 		stop
 

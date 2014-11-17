@@ -620,7 +620,7 @@ contains
 			else
 
 ! If molecular line				
-				at_opacity = OPA * spectrum%line(i)%gf / atm%partition_functions_molecular(:,spectrum%line(i)%molecule) * &
+				at_opacity = OPA * spectrum%line(i)%gf / atm%partition_functions_mol(:,spectrum%line(i)%molecule) * &
 									dexp(-spectrum%line(i)%expot / (PK * atm%T)) *&
 									(1.d0 - dexp(-PHK * spectrum%line(i)%freq / atm%T)) * &
 									atm%mol_density(spectrum%line(i)%molecule,:)

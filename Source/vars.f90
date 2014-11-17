@@ -29,4 +29,7 @@ implicit none
 
 	real(kind=8) :: fact(0:301)
 	
+	integer, parameter :: nMolecules = 4
+	integer :: mol_code(nMolecules) = (/15, 31, 13, 107/)
+	
 end module vars_mod
