@@ -9,7 +9,7 @@ implicit none
 	character(len=1) :: hpflow_c, hpfup_c
 	character(len=3) :: autoion
 	integer :: nonlte_up, nonlte_low, isot, isot2, hpf_low, hpf_up, hpff_low, hpff_up, line_str
-	integer :: i, j, lande_up, lande_low, isot_shift, nargs, nlines
+	integer :: i, j, lande_up, lande_low, isot_shift, nargs, nlines, stat
 	character(len=100) :: infile
 
 		nargs = iargc()
@@ -20,8 +20,9 @@ implicit none
 		open(unit=10,file=infile,status='old',action='read')
 
 		k = 0
-		do while (.not. eof(10))
-			read(10,*)
+		do
+                        read(10,*,iostat=stat)
+                        if (is_iostat_end(stat)) exit
 			k = k + 1			
 		enddo
 
